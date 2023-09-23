@@ -1,0 +1,9 @@
+node_modules
+config.json
+data.json
+server.js
+mydb.db
+index.js
+database.js
+.vscode/settings.json
+.DS_Store
