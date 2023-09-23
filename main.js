@@ -1,14 +1,20 @@
+// Required modules and dependencies
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
+// Initialize the Discord client with the required intent
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+// Create a new collection for the client's commands
 client.commands = new Collection();
+
+// Define the path for command folders and read them
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
-// commands is a Collection of SlashCommandBuilders
+
+// Loop through each command folder and file, and add them to the client's commands collection
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -22,12 +28,12 @@ for (const folder of commandFolders) {
 		}
 	}
 }
-/* Reading event files 
 
-*/
+// Define the path for event files and read them
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
+// Loop through each event file and bind the corresponding event handler
 for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
 	const event = require(filePath);
@@ -38,4 +44,5 @@ for (const file of eventFiles) {
 	}
 }
 
+// Log the bot in using the token from the config
 client.login(token);
